@@ -1,11 +1,13 @@
 import { Button, Form, Input, Typography } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 const BACKEND_LOGIN_URL = 'http://localhost:3010/login';
 
 export interface LoginPageProps {}
 
 const LoginPage: React.FC<LoginPageProps> = () => {
+  const history = useHistory();
   const [formError, setFormError] = useState('');
 
   const handleFinish = (formData: { username: string; password: string }) => {
@@ -29,7 +31,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
       })
       .then((authToken) => {
         window.localStorage.setItem('authToken', authToken as string);
-        // navigate to dashboard
+        history.push('/');
       });
   };
 
