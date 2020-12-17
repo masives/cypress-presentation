@@ -8,6 +8,7 @@ interface Props {
 
 const PrivateRoute: React.FC<Props> = ({ component: Component, ...rest }) => {
   const isAuthenticated = !!window.localStorage.getItem('authToken');
+  console.log({ isAuthenticated });
 
   return <Route {...rest} render={(props) => (isAuthenticated ? <Component {...props} /> : <Redirect to="/login" />)} />;
 };

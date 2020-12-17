@@ -1,6 +1,6 @@
 import { Button, Form, Input, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 const BACKEND_LOGIN_URL = 'http://localhost:3010/login';
 
@@ -8,7 +8,15 @@ export interface LoginPageProps {}
 
 const LoginPage: React.FC<LoginPageProps> = () => {
   const history = useHistory();
+  const { pathname } = useLocation();
   const [formError, setFormError] = useState('');
+
+  useEffect(() => {
+    const isAuthenticated = !!window.localStorage.getItem('authToken');
+    if (isAuthenticated) {
+      history.push('/');
+    }
+  }, [pathname]);
 
   const handleFinish = (formData: { username: string; password: string }) => {
     setFormError('');
@@ -25,13 +33,18 @@ const LoginPage: React.FC<LoginPageProps> = () => {
         if (res.status === 401) {
           setFormError('invalid credentials');
         }
+        if (res.status === 500) {
+          setFormError('Unexpected server error');
+        }
         if (res.ok) {
           return res.text();
         }
       })
       .then((authToken) => {
-        window.localStorage.setItem('authToken', authToken as string);
-        history.push('/');
+        if (typeof authToken === 'string') {
+          window.localStorage.setItem('authToken', authToken);
+          history.push('/');
+        }
       });
   };
 
