@@ -1,6 +1,6 @@
 describe('Auth', () => {
   it('should display errors when no data is provided', () => {
-    cy.visit('/');
+    cy.visit('/login');
     cy.get('button').click();
 
     cy.contains("'username' is required").should('be.visible');
@@ -8,7 +8,7 @@ describe('Auth', () => {
   });
 
   it('should display error when invalid credentials', () => {
-    cy.visit('/');
+    cy.visit('/login');
     cy.get('#username').type('invalidData');
     cy.get('#password').type('invalidData');
     cy.get('button').click();
@@ -16,10 +16,10 @@ describe('Auth', () => {
     cy.contains('invalid credentials').should('be.visible');
   });
 
-  it('should redirect to dashboarda after login', () => {
-    cy.visit('/');
-    cy.get('#username').type(Cypress.env('login'));
-    cy.get('#password').type(Cypress.env('password'));
+  it('should redirect to dashboard after login', () => {
+    cy.visit('/login');
+    cy.get('#username').type(Cypress.env('login')); // CYPRESS_login
+    cy.get('#password').type(Cypress.env('password')); // CYPRESS_password
     cy.get('button').click();
 
     cy.url().should('eq', Cypress.config().baseUrl + '/');
@@ -27,7 +27,15 @@ describe('Auth', () => {
   });
 
   it('should redirect already logged in users', () => {
-    cy.visit('/');
+    cy.login();
+    cy.visit('/login');
+
+    cy.url().should('eq', Cypress.config().baseUrl + '/');
+    cy.contains('dashboard').should('be.visible');
+  });
+
+  it('should display message when backend is unavailable', () => {
+    cy.visit('/login');
     cy.intercept(
       {
         method: 'POST',
