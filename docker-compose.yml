@@ -1,0 +1,29 @@
+version: '3.5'
+
+services:
+  web:
+    container_name: web
+    build: 
+      dockerfile: Dockerfile.Web
+      context: .
+    ports:
+      - 3000:80
+
+  server:
+    container_name: server
+    build: 
+      dockerfile: Dockerfile.Server
+      context: .
+    ports:
+      - 3010:3010
+
+  cypress:
+    image: cypress/included:4.4.0
+    container_name: cypress
+    working_dir: /app
+    volumes:
+        - ./:/app
+        - ./wait-for-it.sh:/usr/local/bin/wait-for-it.sh
+    entrypoint: "wait-for-it.sh web:80 -- cypress run"
+    environment:
+      - CYPRESS_BASE_URL=http://web
