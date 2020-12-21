@@ -16,7 +16,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
     if (isAuthenticated) {
       history.push('/');
     }
-  }, [pathname]);
+  }, [history, pathname]);
 
   const handleFinish = (formData: { username: string; password: string }) => {
     setFormError('');
