@@ -26,14 +26,6 @@ describe('Auth', () => {
     cy.contains('dashboard').should('be.visible');
   });
 
-  it('should redirect already logged in users', () => {
-    cy.login();
-    cy.visit('/login');
-
-    cy.url().should('eq', Cypress.config().baseUrl + '/');
-    cy.contains('dashboard').should('be.visible');
-  });
-
   it('should display message when backend is unavailable', () => {
     cy.visit('/login');
     cy.intercept(
@@ -53,5 +45,13 @@ describe('Auth', () => {
     cy.get('button').click();
 
     cy.contains('Unexpected server error').should('be.visible');
+  });
+
+  it('should redirect already logged in users', () => {
+    cy.login();
+    cy.visit('/login');
+
+    cy.url().should('eq', Cypress.config().baseUrl + '/');
+    cy.contains('dashboard').should('be.visible');
   });
 });
