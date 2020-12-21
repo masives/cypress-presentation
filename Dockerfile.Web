@@ -3,10 +3,15 @@ FROM node:10.17.0-alpine as build
 # ARG URL
 # ENV REACT_APP_DJANGO_BACKEND_HOST=$URL
 # ENV INLINE_RUNTIME_CHUNK=false
+ENV REACT_APP_API_HREF=http://server:3010
 
 WORKDIR /app
-COPY . ./
+
+COPY ./package.json ./
+COPY ./yarn.lock ./
 RUN yarn
+
+COPY . ./
 RUN yarn build
 
 FROM nginx:1.16.0-alpine

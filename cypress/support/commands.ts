@@ -9,7 +9,7 @@ declare global {
 }
 
 Cypress.Commands.add('login', () => {
-  return fetch('http://localhost:3010/login', {
+  return fetch(`${Cypress.env().SERVER_URL}/login`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',

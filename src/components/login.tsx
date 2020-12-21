@@ -2,7 +2,7 @@ import { Button, Form, Input, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
-const BACKEND_LOGIN_URL = 'http://localhost:3010/login';
+const BACKEND_LOGIN_URL = `${process.env.REACT_APP_API_HREF}/login`;
 
 export interface LoginPageProps {}
 

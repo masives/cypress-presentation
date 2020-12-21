@@ -8,7 +8,6 @@ services:
       context: .
     ports:
       - 3000:80
-
   server:
     container_name: server
     build: 
@@ -18,7 +17,7 @@ services:
       - 3010:3010
 
   cypress:
-    image: cypress/included:4.4.0
+    image: cypress/included:6.1.0
     container_name: cypress
     working_dir: /app
     volumes:
@@ -27,3 +26,4 @@ services:
     entrypoint: "wait-for-it.sh web:80 -- cypress run"
     environment:
       - CYPRESS_BASE_URL=http://web
+      - CYPRESS_SERVER_URL=http://server:3010

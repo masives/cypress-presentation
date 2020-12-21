@@ -39,7 +39,7 @@ describe('Auth', () => {
     cy.intercept(
       {
         method: 'POST',
-        url: 'http://localhost:3010/login',
+        url: `${Cypress.env().SERVER_URL}/login`,
       },
       {
         statusCode: 500,
@@ -48,8 +48,8 @@ describe('Auth', () => {
       },
     );
 
-    cy.get('#username').type(Cypress.env('login'));
-    cy.get('#password').type(Cypress.env('password'));
+    cy.get('#username').type('invalidData');
+    cy.get('#password').type('invalidData');
     cy.get('button').click();
 
     cy.contains('Unexpected server error').should('be.visible');
